@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --main-color: #D91656;
+            --color: #fff;
+            --bg-color: #eee;
+        }
+
+        body {
+            background-color: var(--bg-color);
+        }
+
+        header {
+            background-color: var(--main-color);
+        }
+
+        .btn-primary {
+            background-color: var(--main-color);
+            border-color: var(--main-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--main-color);
+            border-color: var(--main-color);
+        }
+
+        /* .btn-primary:active {
+            background-color: var(--main-color);
+            border-color: var(--main-color);
+        } */
+
+        .btn-primary:focus {
+            background-color: var(--main-color);
+            border-color: var(--main-color);
+        }
+
+        hr {
+            background-color: var(--main-color);
+            padding: 1px;
+            opacity: 1;
+        }
+
+        h2 {
+            font-family: fantasy;
+            letter-spacing: 1px;
+            color: var(--color);
+        }
+
+        .total-section {
+            background-color: var(--main-color);
+        }
+
+        th {
+            background-color: var(--main-color) !important;
+            color: var(--color);
+        }
+
+        .action button {
+            background-color: green;
+            color: var(--color);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+        }
+
+        .action button:nth-child(2) {
+            background-color: red;
+        }
+
+        table {
+            background-color: var(--color);
+        }
+
+        .t-height {
+            height: 325px;
+        }
+
+        .t-height::-webkit-scrollbar {
+            width: 2px;
+            background: var(--main-color);
+        }
+
+        .mode-btn {
+            background-color: var(--color);
+            border-radius: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 p-3 d-flex justify-content-between">
+                    <h2>Budget Application</h2>
+                    <button class="btn mode-btn">Dark Mood</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card my-2 p-2">
+                    <h4>Budget</h4>
+                    <div>
+                        <form>
+                            <input class="form-control my-2" type="number" placeholder="Total Budget" id="budget">
+                            <button type="button" class="btn btn-primary" id="budget-btn">Set Budget</button>
+                        </form>
+                    </div>
+                    <hr class="my-5">
+                    <h4>Expence</h4>
+                    <div>
+                        <form>
+                            <input type="text" class="form-control my-2" placeholder="Product Title" id="title">
+                            <input type="number" class="form-control" placeholder="Cost of Product" id="cost">
+                            <button type="button" class="btn btn-primary my-2" id="exp-btn">Set Expence</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="total-section my-2 rounded py-3">
+                            <div class="row text-center text-white">
+                                <div class="col-md-4 col-sm-4">
+                                    <h5>Total Budget</h5>
+                                    <p id="total-budget">0</p>
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <h5>Total Expence</h5>
+                                    <p id="total-exp">0</p>
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <h5>Total Balance</h5>
+                                    <p id="total-balance">0</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive t-height">
+                            <table class="table text-center">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Cost</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="expence_list">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+    <script>
+        const modeToggle = document.querySelector('.mode-btn');
+
+        let currentTheme = localStorage.getItem('theme') || 'light';
+        setTheme(currentTheme);
+
+        modeToggle.addEventListener('click', () => {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+            setTheme(currentTheme);
+            localStorage.setItem('theme', currentTheme);
+        })
+
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.style.setProperty('--bg-color', '#111');
+            } else {
+                document.documentElement.style.setProperty('--bg-color', '#eee');
+            }
+        }
+    </script>
+</body>
+
+</html>
